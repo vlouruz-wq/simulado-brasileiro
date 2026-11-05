@@ -1,0 +1,34 @@
+# Simulador do Brasileirão
+
+- [x] Carregar a tabela atual do Brasileirão Série A publicada pelo GE, incluindo todos os clubes e seus dados de classificação; manter a origem e a data da coleta visíveis. A fotografia coletada em 23/10/2026 às 23:01 contém os 20 clubes; os resultados dos 310 jogos realizados reproduzem integralmente pontos, jogos, GP e GC da base nos testes.
+- [x] Identificar e exibir somente os jogos ainda não disputados, incluindo atrasados, agrupados e navegáveis rodada a rodada. São 70 partidas: Chapecoense x Vasco, atrasada da rodada 21; nove partidas da rodada 32; dez de cada rodada 33 a 38. A partida finalizada Cruzeiro x Remo não é editável.
+- [x] Permitir o preenchimento e a alteração dos gols de mandante e visitante em cada partida restante; diferenciar visualmente resultados já preenchidos de partidas ainda pendentes na simulação. Os campos aceitam apenas inteiros 0–99; o estado verde aparece somente com ambos os gols preenchidos.
+- [x] Recalcular imediatamente os pontos de cada clube após cada placar completo informado, aplicando 3 pontos por vitória, 1 por empate e 0 por derrota; atualizar automaticamente a classificação completa ao combinar a campanha atual com os resultados simulados, sem contar jogos duas vezes. Testes cobrem 0–0, vitória, edição, limpeza, imutabilidade da base e conclusão de 38 jogos por clube. Teste de renderização assegura os totais na interface.
+- [x] Aplicar os critérios oficiais de desempate necessários para ordenar clubes com a mesma pontuação e explicitar limitações de cartões e sorteio em simulações apenas de gols. Implementados vitórias, SG, GP e confronto direto só para dois clubes com ida e volta completas, por pontos e saldo agregado. Empates residuais recebem asterisco, mantendo ordem GE provisória; as limitações são explicadas na janela de regras.
+- [x] Oferecer uma ação para limpar os placares simulados e restaurar a classificação inicial; preservar a simulação neste navegador e usar interface responsiva em português do Brasil. Reset pede confirmação, armazenamento local é validado por ID de partida e falhas exibem aviso; filtros de clube e tabela original estão conectados.
+
+## Evidências de execução
+
+`pnpm check`, `pnpm test` e `pnpm build:static` concluídos; 24 testes aprovados. Serviço de prévia na porta 3000 responde HTTP 200; `/manus-routes.json` responde JSON correto com a rota `/`. Escudos dos 20 clubes foram baixados das URLs do GE e incluídos no projeto. Revisão final de integração somente leitura concluída sem defeitos pendentes.
+
+## Temporada histórica de 2025
+
+- [x] Transformar o elemento “TEMPORADA 2026” no topo em um seletor utilizável por toque, com opções 2026 e 2025. A escolha de 2025 exibe a temporada histórica; ao voltar a 2026, preservar os placares da simulação já preenchidos. O seletor nativo tem rótulo acessível; os estados e o armazenamento da simulação continuam no componente Home, fora da alternância de visualização, sem limpeza ao trocar o ano.
+- [x] Mostrar toda a classificação final do Brasileirão Série A 2025, com os 20 clubes, posições, pontos, jogos, vitórias, empates, derrotas, GP, GC, SG e aproveitamento. Identificar a temporada como encerrada, com resultados reais não editáveis e fontes consultáveis; não misturar com resultados simulados de 2026. Dados completos da CBF, com confirmação editorial do GE; renderização testada com 20 linhas, sem inputs de placar, movimentos de simulação ou empates provisórios.
+- [x] Destacar o campeão de 2025, os quatro rebaixados da Série A 2025 e os quatro clubes que subiram da Série B 2025 para disputar a Série A 2026, distinguindo as duas divisões e mostrando os pontos finais de cada grupo. Flamengo campeão com 79 pontos; Ceará, Fortaleza, Juventude e Sport rebaixados; Coritiba, Athletico-PR, Chapecoense e Remo promovidos da Série B. As posições e pontos dos promovidos são identificados como Série B 2025.
+
+`pnpm check`, `pnpm test` e `pnpm build:static` concluídos nesta atualização; 29 testes aprovados, incluindo cinco novos testes de histórico e seletor. A prévia foi reiniciada com a configuração atual do ambiente; aplicação e manifesto de rotas respondem HTTP 200.
+
+## Atualização do GE em 27/10/2026
+
+- [x] Renovar a classificação de 2026 e os resultados de todas as rodadas com os dados atuais do GE, incorporando as partidas já realizadas desde a coleta anterior. Deixar disponíveis para simulação apenas jogos ainda não iniciados, incluindo eventuais atrasados, e atualizar a data de coleta visível. Coleta às 15:39 de 27/10/2026: nove resultados adicionais da rodada 32 incorporados, 319 partidas realizadas e 61 pendentes; rodada atual 33. A rodada 32 está completamente finalizada e não aparece para simular; resta Chapecoense x Vasco da rodada 21 e as rodadas 33–38.
+- [x] Preservar os palpites anteriormente salvos para partidas que continuam pendentes; descartar da simulação os palpites de partidas que já foram realizadas, usando o resultado real na base e sem contagem dupla. Manter a consulta histórica de 2025 intacta. Chave estável de armazenamento por temporada e migração das chaves anteriores; apenas IDs pendentes são restaurados. O reset vazio não ressuscita palpites antigos. Histórico de 2025 confirmado idêntico à versão anterior.
+
+Verificações desta atualização: `pnpm check`, `pnpm test` e `pnpm build:static` concluídos. 38 testes aprovados, incluindo oito testes de armazenamento/migração e regressão contra contagem dupla de partidas realizadas. Aplicação e manifesto de rotas respondem HTTP 200; navegação ajusta a seleção para uma rodada ainda pendente quando a base muda.
+
+## Atualização do GE em 01/11/2026
+
+- [x] Renovar a fotografia de 2026 a partir da tabela e das 38 rodadas disponibilizadas pelo GE, incorporando cada partida que já recebeu resultado desde 27/10. Exibir para simulação exclusivamente as partidas com status pendente, inclusive jogo atrasado que ainda não tenha começado, e atualizar a data da coleta. Coleta às 15:39 de 01/11/2026: os 10 resultados da rodada 33 foram incorporados; há 329 partidas realizadas e 51 pendentes, com a rodada atual 34. A rodada 33 está concluída e não aparece como opção de placar.
+- [x] Manter palpites somente de IDs que seguem pendentes. Palpites relativos a jogos realizados devem ser removidos automaticamente e a classificação deve usar apenas o placar real, sem contagem em duplicidade; a temporada final de 2025 não pode ser modificada. O filtro persistente aceita somente IDs pendentes: Chapecoense x Vasco, da rodada 21, e as rodadas 34 a 38. Histórico de 2025 confirmado byte a byte igual à versão salva antes da atualização.
+
+Verificações desta atualização: 380 IDs únicos, todos os jogos da rodada 33 finalizados e todas as partidas das rodadas 34–38 pendentes. `pnpm check`, `pnpm test` e `pnpm build:static` concluídos, com 38 testes aprovados. A Prévia foi reiniciada e o manifesto de rotas responde JSON correto.
